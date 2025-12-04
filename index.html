@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Jati Perkasa Mebel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        :root {
+            /* Tema warna coklat sesuai dengan toko mebel */
+            --primary-brown: #5D4037;
+            --brown-light: #795548;
+            --brown-lighter: #8D6E63;
+            --brown-dark: #4E342E;
+            --brown-bg: #F5EFE6;
+            --brown-bg-dark: #EFEBE9;
+            --text-primary: #3E2723;
+            --text-secondary: #5D4037;
+            --text-light: #8D6E63;
+            --white: #FFFFFF;
+            --border-color: #D7CCC8;
+            --card-shadow: 0 4px 6px -1px rgba(93, 64, 55, 0.1), 0 2px 4px -1px rgba(93, 64, 55, 0.06);
+            --card-shadow-hover: 0 10px 15px -3px rgba(93, 64, 55, 0.1), 0 4px 6px -2px rgba(93, 64, 55, 0.05);
+            --sidebar-bg: #5D4037;
+            --gradient-brown: linear-gradient(135deg, #5D4037, #795548);
+            --gradient-light: linear-gradient(135deg, #795548, #8D6E63);
+        }
+
+        body {
+            background-color: var(--brown-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 10000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(93, 64, 55, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-brown);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "🌳";
+            font-size: 1.8rem;
+        }
+
+        .top-nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .top-nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .top-nav-links a:hover, .top-nav-links a.active {
+            color: var(--primary-brown);
+            background-color: var(--brown-bg);
+        }
+
+        .top-nav-links a.active {
+            font-weight: 600;
+            background-color: var(--brown-bg-dark);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-brown);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--white);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            padding: 2rem 0;
+            height: calc(100vh - 80px);
+            position: fixed;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(93, 64, 55, 0.2);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0 1.5rem;
+        }
+
+        .sidebar-title {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 500;
+        }
+
+        .sidebar-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .sidebar-nav a.active {
+            background-color: var(--white);
+            color: var(--primary-brown);
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            margin-left: 260px;
+            background-color: var(--brown-bg);
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-section {
+            background: var(--gradient-brown);
+            border-radius: 16px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-4px);
+            border-color: var(--brown-light);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--brown-bg);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            background: var(--gradient-brown);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-brown);
+            box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-brown);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Produk Cards */
+        .produk-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: var(--brown-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .produk-card:hover {
+            background: var(--brown-bg-dark);
+            transform: translateX(4px);
+        }
+
+        .produk-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .produk-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--gradient-brown);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--white);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .produk-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .produk-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .produk-progress {
+            width: 100%;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-brown);
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--primary-brown);
+            font-weight: 500;
+        }
+
+        /* Harga */
+        .harga-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 12px;
+            background: var(--brown-bg);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .harga-item:hover {
+            background: var(--brown-bg-dark);
+            transform: translateX(4px);
+        }
+
+        .harga-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .harga-info h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .harga-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .harga-nilai {
+            color: #D32F2F;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            background-color: var(--brown-bg-dark);
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background-color: var(--white);
+            font-size: 1rem;
+            color: var(--text-primary);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-brown);
+            box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.1);
+        }
+
+        /* Produk Kategori */
+        .kategori-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .kategori-card {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .kategori-card:hover {
+            border-color: var(--primary-brown);
+            transform: translateY(-4px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        .kategori-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .kategori-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-nav-links {
+                display: none;
+            }
+            
+            .dashboard-title {
+                font-size: 1.5rem;
+            }
+            
+            .welcome-section {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Jati Perkasa 🌳</a>
+            
+            <div class="top-nav-links">
+                <a href="#" class="active">Dashboard</a>
+                <a href="index.html">Katalog</a>
+                <a href="meja.html">Meja</a>
+                <a href="kursi.html">Kursi</a>
+                <a href="lemari.html">Lemari</a>
+                <a href="lain-lain.html">Lain-lain</a>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar">JP</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-nav">
+                <div class="sidebar-title">Dashboard</div>
+                <a href="#" class="active">Dashboard</a>
+                <a href="index.html">Semua Produk</a>
+                <a href="meja.html">Meja</a>
+                <a href="kursi.html">Kursi</a>
+                <a href="lemari.html">Lemari</a>
+                <a href="lain-lain.html">Aksesoris</a>
+                <a href="#">Penjualan</a>
+                <a href="#">Pelanggan</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <h1 class="dashboard-title">Selamat Datang di Jati Perkasa</h1>
+                <p class="dashboard-subtitle">Mebel kayu pilihan dengan kualitas terbaik untuk rumah impian Anda.</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Cari produk mebel...">
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">48</div>
+                    <div class="stat-label">Produk Tersedia</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Kategori</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Kepuasan Pelanggan</div>
+                </div>
+            </div>
+
+            <!-- Kategori Produk -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Kategori Produk</h2>
+                </div>
+                <div class="card-content">
+                    <div class="kategori-grid">
+                        <div class="kategori-card" onclick="window.location.href='meja.html'">
+                            <div class="kategori-icon">🪑</div>
+                            <div class="kategori-title">Meja</div>
+                        </div>
+                        <div class="kategori-card" onclick="window.location.href='kursi.html'">
+                            <div class="kategori-icon">🪑</div>
+                            <div class="kategori-title">Kursi</div>
+                        </div>
+                        <div class="kategori-card" onclick="window.location.href='lemari.html'">
+                            <div class="kategori-icon">🚪</div>
+                            <div class="kategori-title">Lemari</div>
+                        </div>
+                        <div class="kategori-card" onclick="window.location.href='lain-lain.html'">
+                            <div class="kategori-icon">📚</div>
+                            <div class="kategori-title">Aksesoris</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Produk Terlaris -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Produk Terlaris</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="produk-card">
+                            <div class="produk-icon">🪑</div>
+                            <div class="produk-info">
+                                <h3>Meja Tamu Kaca Bundar</h3>
+                                <p>Kayu Trembesi & Kaca</p>
+                                <div class="produk-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 85%"></div>
+                                    </div>
+                                    <div class="progress-text">85% terjual</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="produk-card">
+                            <div class="produk-icon">🛋️</div>
+                            <div class="produk-info">
+                                <h3>Sofa Santai Minimalis</h3>
+                                <p>Kayu Mahoni & Busa Premium</p>
+                                <div class="produk-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 72%"></div>
+                                    </div>
+                                    <div class="progress-text">72% terjual</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Target Penjualan -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Target Penjualan Bulanan</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="progress-bar" style="margin: 1.5rem 0; height: 12px;">
+                            <div class="progress-fill" style="width: 68%"></div>
+                        </div>
+                        <p style="text-align: center; font-size: 1.5rem; font-weight: 700; background: var(--gradient-brown); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-top: 1rem;">68% tercapai</p>
+                    </div>
+                </div>
+
+                <!-- Produk dengan Harga Terbaik -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Produk Harga Terbaik</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="harga-item">
+                            <div class="harga-info">
+                                <h4>Meja Kerja Lesehan</h4>
+                                <p>Kayu Pinus</p>
+                            </div>
+                            <div class="harga-nilai">Rp 350.000</div>
+                        </div>
+                        
+                        <div class="harga-item">
+                            <div class="harga-info">
+                                <h4>Kursi Teras Rotan Sintetis</h4>
+                                <p>Kayu & Rotan Sintetis</p>
+                            </div>
+                            <div class="harga-nilai">Rp 550.000</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifikasi -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Notifikasi</h2>
+                    </div>
+                    <div class="card-content">
+                        <p>🔄 <strong>Pesanan baru:</strong> Meja Makan 4 Kursi Set</p>
+                        <p style="margin-top: 0.5rem;">📦 <strong>Pengiriman:</strong> Lemari Pakaian 3 Pintu dalam perjalanan</p>
+                    </div>
+                </div>
+
+                <!-- Produk Kayu Jati -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Produk Kayu Jati</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="produk-card">
+                            <div class="produk-icon">🪑</div>
+                            <div class="produk-info">
+                                <h3>Kursi Makan Jati Klasik</h3>
+                                <p>Kayu Jati Solid</p>
+                            </div>
+                        </div>
+                        
+                        <div class="produk-card">
+                            <div class="produk-icon">🚪</div>
+                            <div class="produk-info">
+                                <h3>Lemari Pajangan Kaca</h3>
+                                <p>Kayu Jati & Kaca Tempered</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produk Terbaru -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Produk Terbaru</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="harga-item">
+                            <div class="harga-info">
+                                <h4>Rak Buku Dinding Vertikal</h4>
+                                <p>Kayu MDF - Desain Minimalis</p>
+                            </div>
+                            <div class="harga-nilai">Rp 780.000</div>
+                        </div>
+                        
+                        <div class="harga-item">
+                            <div class="harga-info">
+                                <h4>Stool Bar Tinggi</h4>
+                                <p>Kayu Akasia - Untuk Kitchen Bar</p>
+                            </div>
+                            <div class="harga-nilai">Rp 420.000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard Jati Perkasa loaded successfully');
+            
+            // Animasi untuk kartu
+            const cards = document.querySelectorAll('.card, .stat-card, .kategori-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Tambahkan interaksi untuk user avatar
+            const userAvatar = document.querySelector('.user-avatar');
+            userAvatar.addEventListener('click', function() {
+                alert('Menu profil admin akan terbuka di sini');
+            });
+
+            // Animasi untuk search bar focus
+            const searchBar = document.querySelector('.search-bar');
+            searchBar.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+
+            searchBar.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+
+            // Navigasi untuk kategori
+            const kategoriCards = document.querySelectorAll('.kategori-card');
+            kategoriCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Efek klik pada kategori
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

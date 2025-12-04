@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Meja Nakas - Jati Perkasa Mebel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        :root {
+            /* Tema warna coklat sesuai dengan toko mebel */
+            --primary-brown: #5D4037;
+            --brown-light: #795548;
+            --brown-lighter: #8D6E63;
+            --brown-dark: #4E342E;
+            --brown-bg: #F5EFE6;
+            --brown-bg-dark: #EFEBE9;
+            --text-primary: #3E2723;
+            --text-secondary: #5D4037;
+            --text-light: #8D6E63;
+            --white: #FFFFFF;
+            --border-color: #D7CCC8;
+            --card-shadow: 0 4px 6px -1px rgba(93, 64, 55, 0.1), 0 2px 4px -1px rgba(93, 64, 55, 0.06);
+            --card-shadow-hover: 0 10px 15px -3px rgba(93, 64, 55, 0.1), 0 4px 6px -2px rgba(93, 64, 55, 0.05);
+            --sidebar-bg: #5D4037;
+            --gradient-brown: linear-gradient(135deg, #5D4037, #795548);
+            --gradient-light: linear-gradient(135deg, #795548, #8D6E63);
+            --harga-color: #D32F2F;
+        }
+
+        body {
+            background-color: var(--brown-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 10000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(93, 64, 55, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-brown);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "🌳";
+            font-size: 1.8rem;
+        }
+
+        .top-nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .top-nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .top-nav-links a:hover, .top-nav-links a.active {
+            color: var(--primary-brown);
+            background-color: var(--brown-bg);
+        }
+
+        .top-nav-links a.active {
+            font-weight: 600;
+            background-color: var(--brown-bg-dark);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-brown);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--white);
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            padding: 2rem 0;
+            height: calc(100vh - 80px);
+            position: fixed;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(93, 64, 55, 0.2);
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0 1.5rem;
+        }
+
+        .sidebar-title {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 500;
+        }
+
+        .sidebar-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .sidebar-nav a.active {
+            background-color: var(--white);
+            color: var(--primary-brown);
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            margin-left: 260px;
+            background-color: var(--brown-bg);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .breadcrumb a {
+            color: var(--primary-brown);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb-separator {
+            color: var(--text-light);
+        }
+
+        /* Detail Produk Header */
+        .produk-header {
+            background: var(--gradient-brown);
+            border-radius: 16px;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .produk-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .produk-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+            border-color: var(--brown-light);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--brown-bg);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title::before {
+            content: "";
+            width: 4px;
+            height: 20px;
+            background: var(--gradient-brown);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .card-content {
+            color: var(--text-secondary);
+        }
+
+        /* Layout Detail Produk */
+        .detail-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .detail-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Produk Gallery (Sederhana) */
+        .produk-gallery {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--brown-bg);
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .main-image img:hover {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        /* Info Produk */
+        .harga-section {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+        }
+
+        .harga {
+            font-weight: 900;
+            color: var(--harga-color);
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            display: block;
+        }
+
+        .diskon {
+            display: inline-block;
+            background: #FF5722;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            vertical-align: middle;
+        }
+
+        .harga-asli {
+            text-decoration: line-through;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Spesifikasi */
+        .spec-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s ease;
+        }
+
+        .spec-item:hover {
+            background-color: var(--brown-bg);
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .spec-value {
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        /* Info Status */
+        .status-info {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-subtext {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary-brown);
+            box-shadow: 0 0 0 4px rgba(93, 64, 55, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-brown);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Related Products */
+        .produk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .produk-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .produk-card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-4px);
+            border-color: var(--brown-light);
+        }
+
+        .produk-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .produk-content {
+            padding: 1.5rem;
+        }
+
+        .produk-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .produk-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .produk-harga {
+            font-weight: 700;
+            color: var(--harga-color);
+            font-size: 1.3rem;
+            text-align: center;
+            display: block;
+        }
+
+        /* Meja Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-item {
+            background: var(--brown-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .feature-item:hover {
+            background: var(--brown-bg-dark);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-nav-links {
+                display: none;
+            }
+            
+            .produk-title {
+                font-size: 1.5rem;
+            }
+            
+            .produk-header {
+                padding: 1.5rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-image {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Jati Perkasa 🌳</a>
+            
+            <div class="top-nav-links">
+                <a href="index.html">Dashboard</a>
+                <a href="index.html">Semua Produk</a>
+                <a href="meja.html" class="active">Meja</a>
+                <a href="kursi.html">Kursi</a>
+                <a href="lemari.html">Lemari</a>
+                <a href="lain-lain.html">Aksesoris</a>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar">JP</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-nav">
+                <div class="sidebar-title">Detail Produk</div>
+                <a href="#spesifikasi" class="active">Spesifikasi</a>
+                <a href="#gambar">Gambar</a>
+                <a href="#harga">Harga & Promo</a>
+                <a href="#fitur">Fitur & Keunggulan</a>
+                <a href="#pengiriman">Pengiriman</a>
+                <div class="sidebar-title" style="margin-top: 2rem;">Produk Terkait</div>
+                <a href="meja-tamu.html">Meja Tamu Kaca Bundar</a>
+                <a href="meja-makan-set.html">Meja Makan 4 Kursi Set</a>
+                <a href="meja-kerja-lesehan.html">Meja Kerja Lesehan</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb">
+                <a href="index.html">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <a href="meja.html">Meja</a>
+                <span class="breadcrumb-separator">/</span>
+                <span>Meja Nakas (Samping Tempat Tidur)</span>
+            </div>
+
+            <!-- Produk Header -->
+            <div class="produk-header">
+                <div>
+                    <h1 class="produk-title">Meja Nakas (Samping Tempat Tidur) 🛏️</h1>
+                    <p class="produk-subtitle">Meja samping tempat tidur praktis dengan laci penyimpanan untuk kamar tidur yang lebih rapi</p>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Kode Produk</div>
+                    <div style="font-size: 1.2rem; font-weight: 700;">JP-MN005</div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">4.6</div>
+                    <div class="stat-label">Rating (89 ulasan)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">167</div>
+                    <div class="stat-label">Terjual Bulan Ini</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">92%</div>
+                    <div class="stat-label">Kepuasan Pelanggan</div>
+                </div>
+            </div>
+
+            <!-- Detail Layout -->
+            <div class="detail-layout">
+                <!-- Gallery Sederhana -->
+                <div class="produk-gallery">
+                    <div>
+                        <div class="main-image">
+                            <img src="meja-nakas.jpg" alt="Meja Nakas (Samping Tempat Tidur)">
+                        </div>
+                        <div class="image-caption">
+                            Meja Nakas - Desain minimalis dengan laci penyimpanan untuk kamar tidur
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Produk -->
+                <div>
+                    <!-- Harga Section -->
+                    <div class="harga-section">
+                        <div style="font-size: 0.9rem; color: var(--text-light);">Harga Normal</div>
+                        <span class="harga-asli">Rp 750.000</span>
+                        <span class="diskon">DISKON 13%</span>
+                        <span class="harga">Rp 650.000</span>
+                        <div style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;">Hemat Rp 100.000</div>
+                    </div>
+
+                    <!-- Spesifikasi -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Spesifikasi Detail</h2>
+                        </div>
+                        <div class="card-content">
+                            <ul class="spec-list">
+                                <li class="spec-item">
+                                    <span class="spec-label">Material Utama</span>
+                                    <span class="spec-value">Kayu Mahoni Grade A Solid</span>
+                                </li>
+                                <li class="spec-item">
+                                    <span class="spec-label">Fitur Penyimpanan</span>
+                                    <span class="spec-value">1 Laci + Ruang Terbuka</span>
+                                </li>
+                                <li class="spec-item">
+                                    <span class="spec-label">Dimensi (P x L x T)</span>
+                                    <span class="spec-value">40 cm × 40 cm × 60 cm</span>
+                                </li>
+                                <li class="spec-item">
+                                    <span class="spec-label">Kapasitas Laci</span>
+                                    <span class="spec-value">15 × 30 × 10 cm</span>
+                                </li>
+                                <li class="spec-item">
+                                    <span class="spec-label">Berat</span>
+                                    <span class="spec-value">8.5 kg</span>
+                                </li>
+                                <li class="spec-item">
+                                    <span class="spec-label">Kapasitas Beban</span>
+                                    <span class="spec-value">25 kg</span>
+                                </li>
+                                <li class="spec-item">
+                                    <span class="spec-label">Warna Tersedia</span>
+                                    <span class="spec-value">Natural Mahoni, Coklat Tua, Hitam</span>
+                                </li>
+                                <li class="spec-item">
+                                    <span class="spec-label">Handle Laci</span>
+                                    <span class="spec-value">Logam Antik dengan Finishing Chrome</span>
+                                </li>
+                                <li class="spec-item">
+                                    <span class="spec-label">Stok Tersedia</span>
+                                    <span class="spec-value" style="color: #4CAF50; font-weight: 600;">78 Unit</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Status Info - Diubah menjadi Hubungi Kami untuk Pemesanan -->
+                    <div class="status-info">
+                        <div class="status-icon">📞</div>
+                        <div class="status-text">Hubungi Kami untuk Pemesanan</div>
+                        <div class="status-subtext">Silakan hubungi sales kami untuk informasi pemesanan dan konsultasi produk</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fitur & Keunggulan -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Fitur & Keunggulan</h2>
+                </div>
+                <div class="card-content">
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">🗃️</div>
+                            <div class="feature-text">Laci Penyimpanan</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🪵</div>
+                            <div class="feature-text">Kayu Mahoni Solid</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📐</div>
+                            <div class="feature-text">Ukuran Kompak</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">⚡</div>
+                            <div class="feature-text">Perakitan Mudah</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🎨</div>
+                            <div class="feature-text">3 Pilihan Warna</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">✨</div>
+                            <div class="feature-text">Finishing Halus</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deskripsi Produk -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Deskripsi Produk</h2>
+                </div>
+                <div class="card-content">
+                    <p>Meja Nakas ini dirancang khusus untuk melengkapi kamar tidur Anda dengan fungsi penyimpanan yang praktis dan desain yang elegan. Dibuat dari kayu Mahoni solid berkualitas tinggi, meja ini menawarkan daya tahan sekaligus keindahan natural kayu.</p>
+                    
+                    <h3 style="margin-top: 1.5rem; color: var(--text-primary);">Keunggulan Produk:</h3>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li><strong>Dual Fungsi:</strong> Dilengkapi dengan laci untuk penyimpanan privat dan ruang terbuka untuk akses cepat</li>
+                        <li><strong>Material Premium:</strong> Kayu Mahoni solid dengan kepadatan tinggi dan serat kayu yang indah</li>
+                        <li><strong>Desain Minimalis:</strong> Cocok untuk berbagai gaya interior kamar tidur modern dan klasik</li>
+                        <li><strong>Konstruksi Kokoh:</strong> Sambungan yang kuat dan stabil untuk penggunaan jangka panjang</li>
+                        <li><strong>Laci Lancar:</strong> Sistem slide laci yang halus dengan handle logam yang elegan</li>
+                        <li><strong>Ukuran Ideal:</strong> Dimensi yang pas untuk samping tempat tidur standar tanpa memakan banyak ruang</li>
+                    </ul>
+
+                    <h3 style="margin-top: 1.5rem; color: var(--text-primary);">Fungsi dan Penggunaan:</h3>
+                    <p>Meja Nakas ini sangat multifungsi untuk:</p>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Tempat meletakkan lampu tidur atau dekorasi kamar</li>
+                        <li>Penyimpanan remote TV, buku, atau majalah</li>
+                        <li>Tempat menaruh ponsel, kacamata, atau jam tangan saat tidur</li>
+                        <li>Laci untuk menyimpan barang berharga atau pribadi</li>
+                        <li>Tambahan meja kecil untuk minuman atau snack</li>
+                        <li>Elemen dekoratif yang mempercantik kamar tidur</li>
+                    </ul>
+
+                    <h3 style="margin-top: 1.5rem; color: var(--text-primary);">Detail Konstruksi:</h3>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li><strong>Material Utama:</strong> Kayu Mahoni solid dengan ketebalan 2 cm</li>
+                        <li><strong>Laci:</strong> Sistem slide metal dengan kapasitas 4.5 liter</li>
+                        <li><strong>Handle:</strong> Logam dengan finishing chrome antik yang tahan karat</li>
+                        <li><strong>Kaki:</strong> Empat kaki dengan penyesuaian ketinggian ±1 cm</li>
+                        <li><strong>Finishing:</strong> Lapisan water-based polyurethane yang aman dan tahan lama</li>
+                        <li><strong>Perakitan:</strong> Dilengkapi dengan perangkat lengkap dan panduan mudah</li>
+                    </ul>
+
+                    <h3 style="margin-top: 1.5rem; color: var(--text-primary);">Tips Penempatan:</h3>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Tempatkan di samping tempat tidur dengan jarak yang nyaman untuk dijangkau</li>
+                        <li>Pastikan ada stop kontak di dekatnya untuk lampu tidur atau charger</li>
+                        <li>Kombinasikan dengan meja nakas serupa untuk tampilan yang serasi</li>
+                        <li>Gunakan sebagai pasangan untuk set furnitur kamar tidur lainnya</li>
+                        <li>Dapat juga digunakan sebagai meja kecil di ruang tamu atau ruang kerja</li>
+                    </ul>
+
+                    <h3 style="margin-top: 1.5rem; color: var(--text-primary);">Informasi Pemesanan:</h3>
+                    <p>Untuk pemesanan produk ini, silakan menghubungi customer service kami melalui:</p>
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li><strong>Telepon:</strong> (021) 1234-5678</li>
+                        <li><strong>WhatsApp:</strong> 0812-3456-7890</li>
+                        <li><strong>Email:</strong> sales@jatiperkasa.com</li>
+                        <li><strong>Showroom:</strong> Jl. Kayu Jati No. 123, Jakarta</li>
+                        <li><strong>Estimasi Pengiriman:</strong> 2-4 hari kerja untuk area Jabodetabek</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Produk Serupa</h2>
+                </div>
+                <div class="card-content">
+                    <div class="produk-grid">
+                        <div class="produk-card" onclick="window.location.href='meja-tamu.html'">
+                            <img src="meja-tamu.jpg" alt="Meja Tamu Kaca Bundar" class="produk-image">
+                            <div class="produk-content">
+                                <h3 class="produk-name">Meja Tamu Kaca Bundar</h3>
+                                <p class="produk-desc">Kayu Trembesi & Kaca Bundar</p>
+                                <span class="produk-harga">Rp 1.800.000</span>
+                            </div>
+                        </div>
+
+                        <div class="produk-card" onclick="window.location.href='meja-makan-set.html'">
+                            <img src="meja-makan-set.jpg" alt="Meja Makan 4 Kursi Set" class="produk-image">
+                            <div class="produk-content">
+                                <h3 class="produk-name">Meja Makan 4 Kursi Set</h3>
+                                <p class="produk-desc">Kayu Jati Belanda Lengkap dengan Kursi</p>
+                                <span class="produk-harga">Rp 4.500.000</span>
+                            </div>
+                        </div>
+
+                        <div class="produk-card" onclick="window.location.href='meja-kerja-lesehan.html'">
+                            <img src="meja-lesehan.jpg" alt="Meja Kerja Lesehan" class="produk-image">
+                            <div class="produk-content">
+                                <h3 class="produk-name">Meja Kerja Lesehan</h3>
+                                <p class="produk-desc">Kayu Pinus dengan Sistem Lipat Praktis</p>
+                                <span class="produk-harga">Rp 350.000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Detail Meja Nakas Jati Perkasa loaded successfully');
+            
+            // Animasi untuk kartu
+            const cards = document.querySelectorAll('.card, .stat-card, .produk-card, .status-info, .feature-item');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Tambahkan interaksi untuk user avatar
+            const userAvatar = document.querySelector('.user-avatar');
+            userAvatar.addEventListener('click', function() {
+                alert('Menu profil admin akan terbuka di sini');
+            });
+        });
+    </script>
+</body>
+</html>
